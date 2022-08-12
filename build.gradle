@@ -1,0 +1,135 @@
+plugins {
+    id 'java'
+    id 'io.fairyproject' version '1.0.1b7'
+    id 'com.github.johnrengelman.shadow' version "7.1.2"
+}
+
+group 'dev.ghast.bossraid'
+version '3.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+fairy {
+    /*
+     * Plugin.yml settings
+     */
+    name = 'BossRiad'
+    mainPackage = 'dev.ghast.bossraid'
+    version = '1.0.0'
+    // Example of how to add a custom thing to the plugin.yml
+    //properties(PlatformType.BUKKIT).put("depend", "['Vault']")
+
+    /*
+     * Fairy settings
+     */
+    fairyVersion = '0.5.3b2-SNAPSHOT'
+    platform("bukkit")
+
+    /*
+     * Modules here, versions aren't latest to prevent anything from going
+     * south.
+     */
+    module("config")
+    module("items", "0.0.1b6-SNAPSHOT")
+    module("command", "0.0.1b16-SNAPSHOT")
+    module("timer", "0.0.1b7-SNAPSHOT")
+    module("menu", "0.0.1b4-SNAPSHOT")
+}
+
+repositories {
+    /* Standard maven repos */
+    mavenCentral()
+    mavenLocal()
+
+    /* Minecraft related libraries */
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        content {
+            includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
+    }
+    maven {
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        content {
+            includeGroup 'net.md-5'
+        }
+    }
+    maven {
+        url = "https://maven.elmakers.com/repository/"
+        content {
+            includeGroup 'org.spigotmc'
+        }
+    }
+    maven {
+        url = "https://mvn.lumine.io/repository/maven-public/"
+        content {
+            includeGroup 'io.lumine'
+        }
+    }
+    maven {
+        url = "https://repo.citizensnpcs.co/"
+        content {
+            includeGroup 'net.citizensnpcs'
+        }
+    }
+    maven {
+        url "https://repo.codemc.io/repository/maven-public/"
+        content {
+            includeGroup 'com.gmail.filoghost.holographicdisplays'
+        }
+    }
+
+    maven {
+        url "https://repo.dmulloy2.net/repository/public/"
+        content {
+            includeGroup 'com.comphenix.protocol'
+        }
+    }
+    maven { url 'https://jitpack.io' }
+    maven { url "https://maven.enginehub.org/repo/" }
+}
+
+shadowJar {
+    relocate('com.github.retrooper', 'dev.ghast.bossraid.libs')
+    relocate('io.github.retrooper', 'dev.ghast.bossraid.libs')
+}
+
+dependencies {
+    /*
+     * Lombok and AOT tooling
+     */
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    /*
+     * Spigot framework
+     */
+    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT'
+
+    /*
+     * Framework
+     */
+    implementation("org.imanity.brew:brew:0.1b5-SNAPSHOT")
+
+    /*
+     * Miscellaneous dependencies
+     */
+    compileOnly 'net.citizensnpcs:citizensapi:2.0.29-SNAPSHOT'
+    compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.0'
+    compileOnly 'com.sk89q.worldguard:worldguard-core:7.0.0'
+    compileOnly 'io.lumine:Mythic-Dist:5.0.3-SNAPSHOT'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+
+test {
+    useJUnitPlatform()
+}
